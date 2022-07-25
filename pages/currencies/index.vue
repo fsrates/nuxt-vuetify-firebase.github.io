@@ -1,9 +1,9 @@
 <template>
-  <v-row justify="center" align="center" background-color="ghostwhite">
+  <v-row justify="center" align="center">
     <v-col
       cols="12"
       sm="12"
-      md="6"
+      md="8"
       lg="6"
       align="center"
       class="py-4 px-4"
@@ -11,12 +11,12 @@
     >
       <v-card light color="ghostwhite" elevation="0">
         <v-card-title class="light">
-				  <v-spacer />
-          หน้าหลัก
+					<v-spacer />
+          อัตราแลกเปลี่ยน
 					<v-spacer />
         </v-card-title>
         <v-card-text class="light">
-          <home />
+          <currencies />
         </v-card-text>
       </v-card>
     </v-col>
@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import Home from '~/components/Home.vue';
+import Currencies from '~/components/Currencies.vue';
 
 export default {
-  name: 'IndexPage',
+  name: 'CurrenciesPage',
 
   components: {
-    Home
+    Currencies
   }
 };
 </script>

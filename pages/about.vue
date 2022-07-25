@@ -1,10 +1,10 @@
 <template>
-  <v-row justify="center" align="center" background-color="ghostwhite">
+  <v-row justify="center" align="center">
     <v-col
       cols="12"
       sm="12"
-      md="6"
-      lg="6"
+      md="8"
+      lg="8"
       align="center"
       class="py-4 px-4"
       background-color="ghostwhite"
@@ -12,11 +12,11 @@
       <v-card light color="ghostwhite" elevation="0">
         <v-card-title class="light">
 				  <v-spacer />
-          หน้าหลัก
+          เกี่ยวกับเรา
 					<v-spacer />
         </v-card-title>
         <v-card-text class="light">
-          <home />
+          <about />
         </v-card-text>
       </v-card>
     </v-col>
@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import Home from '~/components/Home.vue';
+import About from '~/components/About.vue';
 
 export default {
-  name: 'IndexPage',
+  name: 'AboutPage',
 
   components: {
-    Home
+    About
   }
 };
 </script>

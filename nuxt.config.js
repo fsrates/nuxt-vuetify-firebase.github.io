@@ -1,8 +1,20 @@
-import colors from 'vuetify/es5/util/colors'
+require('dotenv');
+const colors = require('vuetify/es5/util/colors').default;
 
-export default {
+module.exports = {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+
+  publicRuntimeConfig: {
+    apiKey: 'AIzaSyB2WDp0suSTCLXGlVoI8Mreo3YSZYVrWmg',
+    authDomain: 'fs-exchange.firebaseapp.com',
+    databaseURL: 'https://fs-exchange-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'fs-exchange',
+    storageBucket: 'fs-exchange.appspot.com',
+    messagingSenderId: '632523912329',
+    appId: '1:632523912329:web:32012615c76e1996328258',
+    measurementId: 'G-PBZ617DDY4'
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -15,7 +27,10 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' },
+      { ref: 'stylesheet', href: 'https://materialdesignicons.com/icon' }
     ]
   },
 
@@ -25,6 +40,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: './plugins/vuetify.js', ssr: true },
+    { src: './plugins/axios.js' },
+    { src: './plugins/firebase.js', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -40,22 +58,68 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    ['cookie-universal-nuxt', { parseJSON: false }],
+    'nuxt-buefy',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/dotenv',
+    '@nuxtjs/firebase'
   ],
+
+  firebase: {
+    config: {
+      apiKey: 'AIzaSyB2WDp0suSTCLXGlVoI8Mreo3YSZYVrWmg',
+      authDomain: 'fs-exchange.firebaseapp.com',
+      databaseURL: 'https://fs-exchange-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'fs-exchange',
+      storageBucket: 'fs-exchange.appspot.com',
+      messagingSenderId: '632523912329',
+      appId: '1:632523912329:web:32012615c76e1996328258',
+      measurementId: 'G-PBZ617DDY4'
+    },
+    services: {
+      auth: {
+        persistence: 'local',
+        initialize: {
+          onAuthStateChangedAction: 'onAuthStateChanged'
+        },
+        ssr: {
+          // retrieved credentials from GOOGLE_APPLICATION_CREDENTIALS env variable
+          // C:\Users\Chonthicha Yaver\Downloads
+          credential: process.env.GOOGLE_APPLICATION_CREDENTIALS
+        }
+      },
+      database: true,
+      storage: true,
+      messaging: true
+    },
+    onFirebaseHosting: false
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/'
+    baseURL: process.env.baseURL || 'http://localhost:3000'
+  },
+
+  env: {
+    GOOGLE_APPLICATION_CREDENTIALS: './assets/service-account.json',
+    authUrl: process.env.AUTH_URL || 'https://fs-exchange.firebaseapp.com',
+    baseURL: process.env.baseURL || 'http://localhost:3000'
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
       lang: 'en'
+    },
+    workbox: {
+      importScripts: [
+        '/firebase-auth-sw.js',
+        '/sw.js'
+      ]
     }
   },
 
@@ -66,7 +130,7 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
+          primary: colors.blue.darken1,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -80,5 +144,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend (config, ctx) {}
   }
-}
+};
